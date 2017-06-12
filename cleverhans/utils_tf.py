@@ -13,7 +13,7 @@ import tensorflow.contrib.slim as slim
 from tensorflow.python.ops.losses.util import add_loss
 import time
 import warnings
-
+from keras import backend as K
 from .utils import batch_indices, _ArgsWrapper
 
 from tensorflow.python.platform import flags
@@ -166,7 +166,8 @@ def model_train(sess, x, y, predictions, X_train, Y_train, save=False,
 
                 # Perform one training step
                 train_step.run(feed_dict={x: X_train[start:end],
-                                          y: Y_train[start:end]})
+                                          y: Y_train[start:end],
+                                          K.learning_phase(): 1})
             assert end >= len(X_train)  # Check that all examples were used
             cur = time.time()
             if verbose:
@@ -241,7 +242,8 @@ def model_eval(sess, x, y, model, X_test, Y_test, args=None):
             # account for variable batch size here
             cur_acc = acc_value.eval(
                 feed_dict={x: X_test[start:end],
-                           y: Y_test[start:end]})
+                           y: Y_test[start:end],
+                           K.learning_phase(): 0})
 
             accuracy += (cur_batch_size * cur_acc)
 

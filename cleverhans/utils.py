@@ -7,7 +7,7 @@ from distutils.version import LooseVersion
 import keras
 from keras.utils import np_utils
 from keras.models import Sequential
-from keras.layers import Dense, Activation, Flatten
+from keras.layers import Dense, Activation, Flatten, Dropout
 import numpy as np
 from six.moves import xrange
 
@@ -132,10 +132,44 @@ def conv_2d(filters, kernel_shape, strides, padding, input_shape=None):
         else:
             return Convolution2D(filters, kernel_shape[0], kernel_shape[1],
                                  subsample=strides, border_mode=padding)
+def fc_model(logits=False, input_ph=None, img_rows=28, img_cols=28,
+              channels=1, nb_filters=64, nb_classes=10, dropout=0):
+    """
+    """
+    model = Sequential()
 
+    # Define the layers successively (convolution layers are version dependent)
+    if keras.backend.image_dim_ordering() == 'th':
+        input_shape = (channels, img_rows, img_cols)
+    else:
+        input_shape = (img_rows, img_cols, channels)
+
+    layers = [Flatten(input_shape=input_shape),
+              Dense(nb_filters),
+              Activation('relu'),
+              Dropout(dropout),
+              Dense(nb_filters),
+              Activation('relu'),
+              Dropout(dropout),
+              Dense(nb_filters),
+              Activation('relu'),
+              Dropout(dropout),
+              Dense(nb_classes)]
+
+    for layer in layers:
+        model.add(layer)
+
+    if logits:
+        logits_tensor = model(input_ph)
+    model.add(Activation('softmax'))
+
+    if logits:
+        return model, logits_tensor
+    else:
+        return model
 
 def cnn_model(logits=False, input_ph=None, img_rows=28, img_cols=28,
-              channels=1, nb_filters=64, nb_classes=10):
+              channels=1, nb_filters=64, nb_classes=10, dropout=0):
     """
     Defines a CNN model using Keras sequential model
     :param logits: If set to False, returns a Keras model, otherwise will also
@@ -162,10 +196,13 @@ def cnn_model(logits=False, input_ph=None, img_rows=28, img_cols=28,
     layers = [conv_2d(nb_filters, (8, 8), (2, 2), "same",
                       input_shape=input_shape),
               Activation('relu'),
+              Dropout(dropout),
               conv_2d((nb_filters * 2), (6, 6), (2, 2), "valid"),
               Activation('relu'),
+              Dropout(dropout),
               conv_2d((nb_filters * 2), (5, 5), (1, 1), "valid"),
               Activation('relu'),
+              Dropout(dropout),
               Flatten(),
               Dense(nb_classes)]
 
