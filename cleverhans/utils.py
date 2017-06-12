@@ -3,24 +3,25 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
+<<<<<<< HEAD
 from distutils.version import LooseVersion
 import keras
 from keras.utils import np_utils
 from keras.models import Sequential
 from keras.layers import Dense, Activation, Flatten, Dropout
+=======
+>>>>>>> ad462c9b512f7dbce525484a8be83d9570e16f95
 import numpy as np
+import warnings
 from six.moves import xrange
-
-if LooseVersion(keras.__version__) >= LooseVersion('2.0.0'):
-    from keras.layers import Conv2D
-else:
-    from keras.layers import Convolution2D
 
 
 class _ArgsWrapper(object):
+
     """
     Wrapper that allows attribute access to dictionaries
     """
+
     def __init__(self, args):
         if not isinstance(args, dict):
             args = vars(args)
@@ -31,11 +32,13 @@ class _ArgsWrapper(object):
 
 
 class AccuracyReport(object):
+
     """
     An object summarizing the accuracy results for experiments involving
     training on clean examples or adversarial examples, then evaluating
     on clean or adversarial examples.
     """
+
     def __init__(self):
         self.clean_train_clean_eval = 0.
         self.clean_train_adv_eval = 0.
@@ -99,6 +102,7 @@ def random_targets(gt, nb_classes):
     return np_utils.to_categorical(np.asarray(result), nb_classes)
 
 
+<<<<<<< HEAD
 def conv_2d(filters, kernel_shape, strides, padding, input_shape=None):
     """
     Defines the right convolutional layer according to the
@@ -219,6 +223,8 @@ def cnn_model(logits=False, input_ph=None, img_rows=28, img_cols=28,
         return model
 
 
+=======
+>>>>>>> ad462c9b512f7dbce525484a8be83d9570e16f95
 def pair_visual(original, adversarial, figure=None):
     """
     This function displays two images: the original and the adversarial sample
@@ -279,7 +285,7 @@ def grid_visual(data):
     current_row = 0
     for y in xrange(num_rows):
         for x in xrange(num_cols):
-            figure.add_subplot(num_cols, num_rows, (x+1)+(y*num_rows))
+            figure.add_subplot(num_cols, num_rows, (x + 1) + (y * num_rows))
             plt.axis('off')
 
             if num_channels == 1:
@@ -290,3 +296,17 @@ def grid_visual(data):
     # Draw the plot and return
     plt.show()
     return figure
+
+
+def conv_2d(*args, **kwargs):
+    from cleverhans.utils_keras import conv_2d
+    warnings.warn("utils.conv_2d is deprecated and may be removed on or after"
+                  " 2018-01-05. Switch to utils_keras.conv_2d.")
+    return conv_2d(*args, **kwargs)
+
+
+def cnn_model(*args, **kwargs):
+    from cleverhans.utils_keras import cnn_model
+    warnings.warn("utils.cnn_model is deprecated and may be removed on or"
+                  " after 2018-01-05. Switch to utils_keras.cnn_model.")
+    return cnn_model(*args, **kwargs)

@@ -17,6 +17,7 @@ from cleverhans.utils import cnn_model, fc_model, AccuracyReport
 import cPickle as pkl
 import math
 import numpy as np
+
 FLAGS = flags.FLAGS
 
 
@@ -26,7 +27,7 @@ def mnist_tutorial(train_start=0, train_end=60000, test_start=0,
                    learning_rate=0.1, nb_filters=64, dropout=0,
                    model_name='cnn'):
     """
-    MNIST cleverhans tutorial
+    MNIST CleverHans tutorial
     :param train_start: index of first training set example
     :param train_end: index of last training set example
     :param test_start: index of first test set example
