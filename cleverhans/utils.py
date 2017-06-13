@@ -2,15 +2,11 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
-
-<<<<<<< HEAD
 from distutils.version import LooseVersion
 import keras
 from keras.utils import np_utils
 from keras.models import Sequential
 from keras.layers import Dense, Activation, Flatten, Dropout
-=======
->>>>>>> ad462c9b512f7dbce525484a8be83d9570e16f95
 import numpy as np
 import warnings
 from six.moves import xrange
@@ -102,7 +98,6 @@ def random_targets(gt, nb_classes):
     return np_utils.to_categorical(np.asarray(result), nb_classes)
 
 
-<<<<<<< HEAD
 def conv_2d(filters, kernel_shape, strides, padding, input_shape=None):
     """
     Defines the right convolutional layer according to the
@@ -223,8 +218,6 @@ def cnn_model(logits=False, input_ph=None, img_rows=28, img_cols=28,
         return model
 
 
-=======
->>>>>>> ad462c9b512f7dbce525484a8be83d9570e16f95
 def pair_visual(original, adversarial, figure=None):
     """
     This function displays two images: the original and the adversarial sample
@@ -305,8 +298,8 @@ def conv_2d(*args, **kwargs):
     return conv_2d(*args, **kwargs)
 
 
-def cnn_model(*args, **kwargs):
-    from cleverhans.utils_keras import cnn_model
-    warnings.warn("utils.cnn_model is deprecated and may be removed on or"
-                  " after 2018-01-05. Switch to utils_keras.cnn_model.")
-    return cnn_model(*args, **kwargs)
+# def cnn_model(*args, **kwargs):
+#     from cleverhans.utils_keras import cnn_model
+#     warnings.warn("utils.cnn_model is deprecated and may be removed on or"
+#                   " after 2018-01-05. Switch to utils_keras.cnn_model.")
+#     return cnn_model(*args, **kwargs)
